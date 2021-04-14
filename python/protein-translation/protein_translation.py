@@ -6,15 +6,15 @@ codons = {'AUG' : 'Methionine', 'UUU' : 'Phenylalanine',
           'UCG' : 'Serine', 'UAU' : 'Tyrosine', 
           'UAC' : 'Tyrosine', 'UGU' : 'Cysteine',
           'UGC' : 'Cysteine', 'UGG' : 'Tryptophan'}
+#stop set contains the STOP codon segments
+stop = {'UAA', 'UAG', 'UGA'}
 def proteins(strand):
-    #stop set contains the STOP codon segments
-    stop = {'UAA', 'UAG', 'UGA'}
     protein = []
     for e in range(0, len(strand), 3): 
         if strand[e:e+3] in stop:
            break
         #If the codon is not a stopping segement the it is added to the protein
-        protein.append(codons[strand[e:e+3]])
+        protein.append(codons[strand[e:e + 3]])
     return protein
 
         
