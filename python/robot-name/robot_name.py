@@ -18,7 +18,3 @@ class Robot:
    
     def reset(self):
         self.name = self.generate_name()
-        
-       
-        
-            
