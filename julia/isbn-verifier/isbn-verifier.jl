@@ -1,12 +1,23 @@
-function ISBN(isbn)
-    isbn = replace(isbn, r"-" => "")
-    if last(isbn, 1) == 'X'
-        if sum([parse(Int, isbn[i])*j for i=1:9 for j=10:-1:2], 10) % 11 != 0
-            false || throw(DomainError, "invalid ISBN")
-        end
-    elseif sum(parse(Int, isbn[i])*j for i=1:10 for j=10:-1:1) % 11 != 0
-        false || throw(DomainError, "invalid ISBN")
-    else
-        isbn
-    end
+struct ISBN
+	str::String
+	function ISBN(str)
+	sum = len = 0
+		for char in str
+			if char == '-'
+				continue
+			elseif isdigit(char)
+				sum += parse(Int, char)*(10-len)
+				len += 1
+			elseif char == 'X' && len == 9
+				sum += 10
+				len += 1
+			else
+				throw(DomainError(str, "Invalid character in ISBN"))
+			end
+		end
+		if mod(sum, 11) != 0 || len != 10
+			throw(DomainError(str, "Not an ISBN-10"))
+		end
+		new(replace(str, r"[^\dX]" => ""))
+	end
 end
