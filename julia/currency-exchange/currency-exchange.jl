@@ -1,23 +1,13 @@
-function exchange_money(budget, exchange_rate)
-    
-end
+exchange_money(budget, exchange_rate) = budget / exchange_rate    
 
-function get_change(budget, exchanging_value)
-    
-end
+get_change(budget, exchanging_value) = budget - exchanging_value 
 
-function get_value_of_bills(denomination, number_of_bills)
-    
-end
+get_value_of_bills(denomination, number_of_bills) = denomination * number_of_bills 
 
-function get_number_of_bills(amount, denomination)
-    
-end
+get_number_of_bills(amount, denomination) = div(amount, denomination)
 
-function get_leftover_of_bills(amount, denomination)
-    
-end
+get_leftover_of_bills(amount, denomination) = amount % denomination
 
-function exchangeable_value(budget, exchange_rate, spread, denomination)
-    
+function exchangeable_value(b, r, s, d)
+	Int(div(b/ (r + (r * s/ 100)), d) * d) 
 end
