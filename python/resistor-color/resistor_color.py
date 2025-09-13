@@ -6,7 +6,7 @@ def color_code(color):
     return c # return the found corresponding color code 
 
 
-def colors():
+def colors(): # exhaustive list of all the colors
     colors = ["black",
               "brown",
               "red",
