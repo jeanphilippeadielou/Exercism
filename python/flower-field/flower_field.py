@@ -1,49 +1,28 @@
+# --- Based off of a solution proposed by a collaborator: W.S.
+from itertools import product
+def check_board(garden):
+    for row in garden:
+        for el in row: # for each char in the string
+            if el.isalpha(): # Invalid char 
+                raise ValueError("The board is invalid with current input.")
+        for diffrow in garden:
+            if len(row) != len(diffrow): # Different lengths 
+                raise ValueError("The board is invalid with current input.")
+
 def annotate(garden):
-    if garden == []:
-        return list()
-    for x in garden:
-        for y in garden:
-            if len(x) != len(y):
-                raise ValueError("The board is invalid with current input.")
-    h = len(garden) # length of the garden
-    if h == 0 :
-        return [] # return empty garden if the garden is empty
-    w = len(garden[0])
-    result = []
-    for i in range(h):
-        line = ""
-        for j in range(w):
-            if garden[i][j] == ' ':
-                lft = j-1
-                cnt = j
-                rgt = j+1
-                top = i-1
-                mid = i
-                bot = i+1
-                flower_horizon = [
-                        # row 1
-                                garden[top][lft] == '*' if top >= 0 and lft >= 0 else False, # 1 
-                                garden[top][cnt] == '*' if top >= 0 else False,              # 2 
-                                garden[top][rgt] == '*' if top >= 0 and rgt < w else False,  # 3
-                        # row 2 
-                                garden[mid][lft] == '*' if lft >= 0 else False,              # 4 
-                                # middle & center "[mid][cnt]" iterator itself
-                                garden[mid][rgt] == '*' if rgt < w else False,               # 5 
-                        # row 3 
-                                garden[bot][lft] == '*' if bot < h and lft >= 0 else False,  # 6 
-                                garden[bot][cnt] == '*' if bot < h else False,               # 7 
-                                garden[bot][rgt] == '*' if bot < h and rgt < w else False    # 8
-                                 ]
-                if not sum(flower_horizon) == 0:
-                    line += str(sum(flower_horizon))
-                else:
-                    line += " "
-            if garden[i][j] == '*':
-                line += "*"
-            if garden[i][j].isalpha():
-                raise ValueError("The board is invalid with current input.")
-        result.append(line)
-    if result != '':
-        return result
-    else:
-        return []
+    check_board(garden)
+    m = len(garden) # number of rows
+    n = len(garden[0]) if garden != [] else 0 # number of columns
+    for i in range(m):
+        garden[i] = list(garden[i]) # Turn srting rows into lists
+    for i,j in product(range(m), range(n)):
+        if garden[i][j] == " ":
+            surrounding = 0 # surrounding count of flowers
+            for dx in [-1, 0, 1]:
+                for dy in [-1, 0, 1]:
+                    if 0 <= i + dx < m and 0 <= j + dy < n:
+                        neighbour = garden[i + dx][j + dy] # neighbouring range
+                        if neighbour == "*": # if it's a flower
+                            surrounding += 1 # increment the count by 1
+            garden[i][j] = str(surrounding) if surrounding != 0 else " "  # leave as-is if no flower
+    return ["".join(garden[i]) for i in range(m)]
